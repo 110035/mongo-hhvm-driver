@@ -91,6 +91,7 @@ class MongoCursor implements \Iterator {
    */
   public function addOption(string $key,
                             mixed $value): MongoCursor {
+    throw new MongoCursorException("Not Implemented");  
     if ($this->started_iterating) {
       throw new MongoCursorException("Tried to add an option after started iterating");
     }
@@ -155,7 +156,7 @@ class MongoCursor implements \Iterator {
                               array $fields = array()) {
     $this->connection = $connection;
     $this->ns = $ns;
-    $this->query = $query;
+    $this->query['$query'] = $query;
     $this->fields = $fields;
 
   }
@@ -472,7 +473,8 @@ class MongoCursor implements \Iterator {
    *   called on.
    */
   public function sort(array $fields) {
-    $this->addOption('$orderby', $fields);
+    //$this->addOption('$orderby', $fields);
+    $this->query['$orderby'] =  $fields;
     return $this;
   }
 
