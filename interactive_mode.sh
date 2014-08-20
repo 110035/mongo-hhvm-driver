@@ -7,4 +7,4 @@ if [ ! -z "${REALPATH}" ]; then
 fi
 
 ${HPHP_HOME}/hphp/hhvm/hhvm -a \
-  -vDynamicExtensions.0=${DIRNAME}/mongo.so
+  -vDynamicExtensions.0=${DIRNAME}/mongo.so --config=/etc/hhvm/server.ini

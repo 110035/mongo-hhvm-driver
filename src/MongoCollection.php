@@ -137,8 +137,8 @@ class MongoCollection {
    * @return int - Returns the number of documents matching the query.
    */
   public function count(array $query = array(),
-                        int $limit,
-                        int $skip): int {
+                        int $limit=0,
+                        int $skip=0): int {
     $cmd = [ 
       'count' => $this->name,
       'query' => $query,
