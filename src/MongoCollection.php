@@ -138,7 +138,7 @@ class MongoCollection {
    */
   public function count(array $query = array(),
                         int $limit=0,
-                        int $skip=0): int {
+                        int $skip=0): float {
     $cmd = [ 
       'count' => $this->name,
       'query' => $query,
