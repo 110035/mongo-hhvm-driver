@@ -138,7 +138,7 @@ class MongoCollection {
    */
   public function count(array $query = array(),
                         int $limit=0,
-                        int $skip=0): float {
+                        int $skip=0): int {
     $cmd = [ 
       'count' => $this->name,
       'query' => $query,
@@ -149,7 +149,7 @@ class MongoCollection {
     if (!$cmd_result["ok"]) {
       throw new MongoCursorException();
     }
-    return $cmd_result["n"];
+    return intval($cmd_result["n"]);
   }
 
   /**
