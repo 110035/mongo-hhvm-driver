@@ -7,7 +7,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #include "hphp/runtime/base/base-includes.h"
-#include <bson.h>
+#include "/usr/local/include/libbson-1.0/bson.h"
 
 namespace HPHP {
 bool arrayIsDocument(const Array& arr);
@@ -31,4 +31,6 @@ void mongoInt64ToBSON(const Object& value, const char* key, bson_t* bson);
 void mongoMinKeyToBSON(const char* key, bson_t* bson);
 void mongoMaxKeyToBSON(const char* key, bson_t* bson);
 bson_t encodeToBSON(const Variant& mixture);
+void  encodeToBSONNew(const Variant& mixture,bson_t *bson);
+
 }

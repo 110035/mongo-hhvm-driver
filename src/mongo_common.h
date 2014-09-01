@@ -3,7 +3,7 @@
 
 #include "hphp/runtime/base/base-includes.h"
 #include "hphp/runtime/base/persistent-resource-store.h"
-#include "mongoc.h"
+#include "/usr/local/include/libmongoc-1.0/mongoc.h"
 #include "string.h"
 
 namespace HPHP {

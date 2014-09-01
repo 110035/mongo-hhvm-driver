@@ -22,6 +22,6 @@ tail -q -n +2 src/exceptions/MongoWriteConcernException.php >> src/ext_mongo.php
 tail -q -n +2 src/types/*.php >> src/ext_mongo.php
 find src/ -maxdepth 1 -name "*.php" \! -name ext_mongo.php | xargs tail -q -n +2 >> src/ext_mongo.php
 
-$HPHP_HOME/hphp/tools/hphpize/hphpize
+#$HPHP_HOME/hphp/tools/hphpize/hphpize
 cmake .
-make -j5
+make VERBOSE=1 

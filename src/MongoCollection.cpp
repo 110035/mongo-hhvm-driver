@@ -41,7 +41,8 @@ static Variant HHVM_METHOD(MongoCollection, insert, Variant a, Array options) {
   collection = get_collection(this_);
 
   Array doc_array = a.toArray();
-  doc = encodeToBSON(doc_array);
+  //doc = encodeToBSON(doc_array);
+  encodeToBSONNew(doc_array,&doc);
   // bson_init(&doc);
   // bson_oid_init_from_string(&oid, doc_array[String("_id")].toString().c_str());
   // bson_append_oid(&doc, "_id", 3, &oid);
@@ -84,8 +85,8 @@ static Variant HHVM_METHOD(MongoCollection, remove, Array criteria, Array option
 
   collection = get_collection(this_);
 
-  criteria_b = encodeToBSON(criteria);
-  
+  //criteria_b = encodeToBSON(criteria);
+  encodeToBSONNew(criteria,&criteria_b);
   //Supporting only "name" key
   //bson_append_utf8(&criteria_b, "name", 4, criteria[String("name")].toString().c_str(), criteria[String("name")].toString().length());
 
@@ -118,9 +119,11 @@ static Variant HHVM_METHOD(MongoCollection, update, Array criteria, Array new_ob
 
   collection = get_collection(this_); 
 
-  selector = encodeToBSON(criteria);
-  update = encodeToBSON(new_object);
-
+//  selector = encodeToBSON(criteria);
+//  update = encodeToBSON(new_object);
+  encodeToBSONNew(criteria,&selector);
+  encodeToBSONNew(new_object,&update );
+  
   //Read oid and name from criteria array 
   // bson_init(&selector); 
   // bson_oid_init_from_string(&oid, criteria[String("_id")].toString().c_str()); 
