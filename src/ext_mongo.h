@@ -66,6 +66,10 @@ class MongoExtension : public Extension {
 public:
   MongoExtension();
   virtual void moduleInit();
+  const DependencySet getDeps() const override {
+          return DependencySet { "asio" };
+    }
+        
 
 private:
   void _initMongoClientClass();
