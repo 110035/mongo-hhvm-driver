@@ -143,7 +143,7 @@ namespace HPHP {
         }
         for (ArrayIter iter(flags_array); iter; ++iter) {
             Variant key(iter.first());
-            flags |= key.toInt64();
+            flags |=  1 << key.toInt64() ;
         }
         
 //        if (flags_array->exists((int64_t) 0)) {
