@@ -4,7 +4,7 @@
  * A cursor is used to iterate through the results of a database query.
  * A cursor does not "contain" the database results, it just manages them.
  */
-class MongoCursor implements Iterator {
+class MongoCursor implements \Iterator {
 
   /* variables */
   private $at = 0;
@@ -91,15 +91,14 @@ class MongoCursor implements Iterator {
    */
   public function addOption(string $key,
                             mixed $value): MongoCursor {
-    
     if ($this->started_iterating) {
       throw new MongoCursorException("Tried to add an option after started iterating");
     }
 
     // Make the query object special (i.e. wrap in $query) if necessary
     if ( ! $this->isSpecial) {
-        $this->query = $this->query;
-        $this->isSpecial = true;
+      $this->query['$query'] = $this->query;
+      $this->isSpecial = true;
     }
 
     $this->query[$key] = $value;
@@ -156,7 +155,7 @@ class MongoCursor implements Iterator {
                               array $fields = array()) {
     $this->connection = $connection;
     $this->ns = $ns;
-    $this->query['$query'] = $query;
+    $this->query = $query;
     $this->fields = $fields;
 
   }
@@ -474,7 +473,6 @@ class MongoCursor implements Iterator {
    */
   public function sort(array $fields) {
     $this->addOption('$orderby', $fields);
-    //$this->query['$orderby'] =  $fields;
     return $this;
   }
 

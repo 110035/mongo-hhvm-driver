@@ -93,7 +93,7 @@ MongocCursor::MongocCursor(mongoc_client_t           *client,
   
   collection = mongoc_client_get_collection (client, db_name.c_str(), collection_name.c_str());
   m_cursor = mongoc_collection_find (collection,
-                                        flags,
+                                    flags,
                                     skip,
                                     limit,
                                     batch_size,

@@ -26,7 +26,8 @@ static void mongoc_log_handler(mongoc_log_level_t log_level,
    }
 }
 
-MongoExtension::MongoExtension() :  Extension("mongo") {
+MongoExtension::MongoExtension() :
+  Extension("mongo") {
 }
 
 void MongoExtension::moduleInit() {

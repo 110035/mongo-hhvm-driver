@@ -5,8 +5,8 @@
 namespace HPHP {
 
   static String encode(const Variant& mixture) {
-    bson_t bson ;
-    encodeToBSONNew(mixture,&bson);
+      bson_t bson;
+    encodeToBSON(mixture,&bson);
 
     const char* output = (const char*) bson_get_data(&bson);        
     String s = String(output, bson.len, CopyString);

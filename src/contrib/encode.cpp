@@ -16,13 +16,12 @@ void fillBSONWithArray(const Array& value, bson_t* bson) {
   for (ArrayIter iter(value); iter; ++iter) {
       Variant key(iter.first());
       const Variant& data(iter.secondRef());
-      //printf("%s\r\n",key.toString().c_str());
+      
       variantToBSON(data, key.toString().c_str(), bson);
   }
 }
 
 void variantToBSON(const Variant& value, const char* key, bson_t* bson) {
-  //printf("key=%s, type=%d\r\n",key,value.getType());
   switch(value.getType()) {
     case KindOfUninit:
     case KindOfNull:
@@ -53,16 +52,7 @@ void variantToBSON(const Variant& value, const char* key, bson_t* bson) {
 }
 
 void arrayToBSON(const Array& value, const char* key, bson_t* bson) {
-    bson_t child;
-//    printf("arrayToBSON begins, key=%s\r\n",key);
-//    bson_append_document_begin (bson, "$orderby", -1, &child);
-//    bson_append_int32 (&child, "ctime", -1, -1);
-//    bson_append_document_end (bson, &child);
-//    bson_append_document_begin (bson, "$query", -1, &child);
-//    bson_append_utf8 (&child, "city_id", -1, "4205",-1);
-//    bson_append_document_end (bson, &child);
-//    printf("arrayToBSON end %s\r\n",key);
-////  bson_init(&child);
+  bson_t child;
   bool isDocument = arrayIsDocument(value);
   if (isDocument) {
     bson_append_document_begin(bson, key, -1, &child);
@@ -88,8 +78,7 @@ void nullToBSON(const char* key, bson_t* bson) {
 }
 
 void boolToBSON(const bool value, const char* key, bson_t* bson) {
-   bson_append_bool(bson, key, -1, value);
-   
+  bson_append_bool(bson, key, -1, value);
 }
 
 void int64ToBSON(const int64_t value, const char* key, bson_t* bson) {
@@ -226,17 +215,9 @@ bool arrayIsDocument(const Array& arr) {
   return false;
 }
 
-bson_t encodeToBSON(const Variant& mixture) {
-  bson_t bson;
-  printf("encodeToBSON:bson : 0x%x\n", &bson);
-  bson_init(&bson);
-  fillBSONWithArray(mixture.toArray(), &bson);
-  return bson;
-}
-
-void  encodeToBSONNew(const Variant& mixture,bson_t *bson) {
+void encodeToBSON(const Variant& mixture,bson_t *bson) {
   bson_init(bson);
   fillBSONWithArray(mixture.toArray(), bson);
+  
 }
-
 } 

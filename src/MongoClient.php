@@ -1,4 +1,5 @@
 <?hh
+class Mongo extends MongoClient{};
 /**
  * A connection manager for PHP and MongoDB.   This class is used to create
  * and manage connections.
@@ -31,7 +32,7 @@ class MongoClient {
    * @return bool - Returns if the connection was successfully closed.
    */
   <<__Native>>
-  public function close(mixed $connection): bool;
+  public function close(?mixed $connection): bool;
 
   /**
    * Connects to a database server
