@@ -36,7 +36,7 @@ class MongoCollection {
    *   inserted array is empty). 
    */
   <<__Native>>
-  public function insert(mixed $a,
+  public function insert(mixed &$a,
                          array $options = array()): mixed;
 
   /**
@@ -451,7 +451,7 @@ class MongoCollection {
    *   of the save. Otherwise, returns a boolean representing if the array
    *   was not empty (an empty array will not be inserted).
    */
-  public function save(mixed $a,
+  public function save(mixed &$a,
                        array $options = array()): mixed {
     if (is_array($a)) {
       if (!isset($a["_id"])) {

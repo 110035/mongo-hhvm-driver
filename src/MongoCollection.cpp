@@ -2,6 +2,23 @@
 #include "contrib/encode.h"
 
 namespace HPHP {
+static ObjectData * 
+create_object(const StaticString * className, Array params)
+{
+  TypedValue ret;
+  Class * cls = Unit::loadClass(className -> get());
+  ObjectData * obj = ObjectData::newInstance(cls);
+  obj->incRefCount();
+
+  g_context->invokeFunc(
+    &ret,
+    cls->getCtor(),
+    params,
+    obj
+  );
+  return obj;
+}
+
 
 static mongoc_collection_t *get_collection(Object obj) {
   mongoc_collection_t *collection;
@@ -39,9 +56,22 @@ static Variant HHVM_METHOD(MongoCollection, insert, Variant a, Array options) {
   bson_error_t error;
 
   collection = get_collection(this_);
-
-  Array doc_array = a.toArray();
+  
+  Array& doc_array = a.toArrRef();
+  if(!doc_array.exists(String("_id"))){
+    const StaticString s_MongoId("MongoId");
+    char id[25];
+    bson_oid_t oid;
+    bson_oid_init (&oid, NULL);
+    bson_oid_to_string(&oid, id);
+    ObjectData * data = create_object(&s_MongoId, make_packed_array(String(id)));
+    doc_array.add(String("_id"),data);
+  }
   encodeToBSON(doc_array,&doc);
+  
+  
+  
+  
   // bson_init(&doc);
   // bson_oid_init_from_string(&oid, doc_array[String("_id")].toString().c_str());
   // bson_append_oid(&doc, "_id", 3, &oid);

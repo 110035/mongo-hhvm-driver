@@ -220,4 +220,6 @@ void encodeToBSON(const Variant& mixture,bson_t *bson) {
   fillBSONWithArray(mixture.toArray(), bson);
   
 }
+
+
 } 
