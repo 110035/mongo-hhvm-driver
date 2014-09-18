@@ -79,10 +79,12 @@ static Variant HHVM_METHOD(MongoCollection, insert, Variant a, Array options) {
   // bson_append_utf8(&doc, "name", 4, doc_array[String("name")].toString().c_str(), doc_array[String("name")].toString().length());
 
   bool ret = mongoc_collection_insert(collection, MONGOC_INSERT_NONE, &doc, NULL, &error);
-
+ 
   mongoc_collection_destroy (collection);
   bson_destroy(&doc);
-
+  if (!ret) {
+    mongoThrow<MongoCursorException>((const char *)error.message);
+  }
   return ret;
   /*
   bool mongoc_collection_insert (mongoc_collection_t           *collection,
@@ -120,10 +122,12 @@ static Variant HHVM_METHOD(MongoCollection, remove, Array criteria, Array option
   //bson_append_utf8(&criteria_b, "name", 4, criteria[String("name")].toString().c_str(), criteria[String("name")].toString().length());
 
   bool ret = mongoc_collection_delete(collection, MONGOC_DELETE_NONE, &criteria_b, NULL, &error);
-
+  
   mongoc_collection_destroy (collection);
   bson_destroy(&criteria_b);
-
+  if (!ret) {
+    mongoThrow<MongoCursorException>((const char *)error.message);
+  }
   return ret;
   /*
   bool mongoc_collection_delete (mongoc_collection_t           *collection,
@@ -164,12 +168,14 @@ static Variant HHVM_METHOD(MongoCollection, update, Array criteria, Array new_ob
   // BSON_APPEND_INT32 (&update, "$hi", 1);
 
   bool ret = mongoc_collection_update(collection, MONGOC_UPDATE_NONE, &selector, &update, NULL, &error);
-
+ 
   mongoc_collection_destroy (collection);
 
   bson_destroy(&update);
   bson_destroy(&selector); 
-
+  if (!ret) {
+    mongoThrow<MongoCursorException>((const char *)error.message);
+  }
   return ret; 
 
 /*

@@ -21,6 +21,10 @@ static Variant HHVM_METHOD(MongoCursor, current) {
   const bson_t *doc;
 
   doc = mongoc_cursor_current(cursor);
+  bson_error_t error;
+  if (mongoc_cursor_error (cursor, &error)) {
+    mongoThrow<MongoCursorException>((const char *)error.message);
+  }
   if (doc) {
     auto ret = cbson_loads(doc);  
     return ret;   
@@ -50,13 +54,13 @@ static void HHVM_METHOD(MongoCursor, next) {
   }
   
   mongoc_cursor_t *cursor = get_cursor(this_)->get();
-  // if (!mongoc_cursor_next (cursor, &doc)) {
-  //   if (mongoc_cursor_error (cursor, &error)) {
-  //     throw FatalErrorException(error.message);
-  //   }
-  // }
+   
   mongoc_cursor_next (cursor, &doc);   //Note: error would be catched by valid()
-
+  bson_error_t error;
+  if (mongoc_cursor_error (cursor, &error)) {
+    mongoThrow<MongoCursorException>((const char *)error.message);
+  }
+  
   auto at = this_->o_realProp("at", ObjectData::RealPropUnchecked, "MongoCursor")->toInt64();
   this_->o_set("at", at + 1, "MongoCursor");
 }
@@ -179,6 +183,11 @@ MongocCursor(mongoc_client_t           *client,
                                     &query_bs,
                                     &fields_bs,
                                     read_prefs);
+  
+  bson_error_t error;
+  if (mongoc_cursor_error (cursor->get(), &error)) {
+    mongoThrow<MongoCursorException>((const char *)error.message);
+  }
   
   this_->o_set(s_mongoc_cursor, cursor, s_mongocursor);
   bson_destroy(&query_bs);
