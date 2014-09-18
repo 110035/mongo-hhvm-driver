@@ -11,14 +11,14 @@ namespace HPHP {
 // class MongoClient
 
 static void HHVM_METHOD(MongoClient, __construct, const String& uri, Array options) {
-  MongocClient *client = MongocClient::GetPersistent(uri);
+    
+MongocClient *client = MongocClient::GetPersistent(uri);
 
   if (client == nullptr) {
     client = new MongocClient(uri);
   }
-
   if (client->isInvalid()) {
-      mongoThrow<MongoConnectionException>(strcat("Unable to connect: ", uri.c_str()));
+      mongoThrow<MongoConnectionException>(("unable connect to "+uri+", Uri error ").c_str());
   }
 
   MongocClient::SetPersistent(uri, client);

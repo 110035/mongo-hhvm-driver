@@ -41,6 +41,9 @@ void MongocClient::SetCachedImpl(const char *name, const String& uri, MongocClie
 
 MongocClient::MongocClient(const String &uri) {
   m_client = mongoc_client_new(uri.c_str());
+  if(!m_client){
+      m_client = nullptr;
+  }
 }
 
 MongocClient::~MongocClient() {
