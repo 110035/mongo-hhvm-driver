@@ -196,12 +196,12 @@ namespace HPHP {
         }
         collection_error = mongoc_collection_get_last_error(collection);
         //char *str;
-        if (collection_error) {
+        //if (collection_error) {
             //for debug
             //str = bson_as_json(collection_error, NULL);
             //printf("debug = %s\r\n",str);
             //bson_free(str);
-        }
+        //}
         Array collectionReturn = Array();
         Array ouput = Array();
         collectionReturn = cbson_loads(collection_error);
@@ -209,7 +209,7 @@ namespace HPHP {
         ouput.add(String("ok"),1);
         ouput.add(String("nModified"),collectionReturn[String("nModified")]);
         ouput.add(String("n"),collectionReturn[String("nMatched")]);
-        ouput.add(String("updatedExisting"),true);//todo
+        ouput.add(String("updatedExisting"),collectionReturn[String("nMatched")].toInt64() > 0 ?true:false);//todo 
         
         ouput.add(String("err"),collectionReturn[String("writeErrors")]);
         ouput.add(String("errmsg"),collectionReturn[String("writeErrors")]);
