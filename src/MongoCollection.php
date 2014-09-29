@@ -416,25 +416,26 @@ class MongoCollection {
    */
   public function group(mixed $keys,
                         array $initial,
-                        MongoCode $reduce,
+                        string $reduce,
                         array $options = array()): array {
     $group = array( '$reduce' => $reduce,
                     'initial' => $initial);
-    if(get_class($keys) == "MongoCode") {
-      $group['$keyf'] = $keys;
-    }
-    else {
-      $group['key'] = $keys;
-    }
-    
+//    if(get_class($keys) == "MongoCode") {
+//      $group['$keyf'] = $keys;
+//    }
+//    else {
+//      $group['key'] = $keys;
+//    }
+    $group['$keyf'] = $keys;
     $cmd = array('group' => $group);
-    $ret = $this->db->runCommand($cmd);
+    $ret = $this->db->command($cmd);
     if (!$ret["ok"]) {
-      throw MongoResultException("Group command failed");
+      throw new MongoResultException("Group command failed");
     }
 
     return $ret;
   }
+  
 
   
 

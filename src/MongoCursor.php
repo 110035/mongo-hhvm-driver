@@ -96,10 +96,10 @@ class MongoCursor implements \Iterator {
     }
 
     // Make the query object special (i.e. wrap in $query) if necessary
-    if ( ! $this->isSpecial) {
-      $this->query['$query'] = $this->query;
-      $this->isSpecial = true;
-    }
+//    if ( ! $this->isSpecial) {
+//      $this->query['$query'] = $this->query;
+//      $this->isSpecial = true;
+//    }
 
     $this->query[$key] = $value;
     return $this;
@@ -155,7 +155,7 @@ class MongoCursor implements \Iterator {
                               array $fields = array()) {
     $this->connection = $connection;
     $this->ns = $ns;
-    $this->query = $query;
+    $this->query['$query'] = $query;
     $this->fields = $fields;
 
   }
