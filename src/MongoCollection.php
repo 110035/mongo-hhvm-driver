@@ -145,6 +145,7 @@ class MongoCollection {
       'limit' => $limit,
       'skip' => $skip
     ];
+    //var_dump($cmd);
     $cmd_result = $this->db->command($cmd);
     if (!$cmd_result["ok"]) {
       throw new MongoCursorException();
@@ -204,7 +205,7 @@ class MongoCollection {
    * @return array - Returns an array of distinct values,
    */
   public function distinct(string $key,
-                           array $query): array {
+                           array $query =  array()): array {
     return $this->db->command(array("distinct" => $this->name, "key" => $key, "query" => $query));
   }
 
@@ -284,6 +285,8 @@ class MongoCollection {
   public function find(array $query = array(),
                        array $fields = array()): MongoCursor {
     $ns = $this->getFullName();
+    //var_dump($ns);
+    
     return new MongoCursor($this->db->__getClient(), $ns, $query, $fields);
   }
 
@@ -331,7 +334,7 @@ class MongoCollection {
     $cursor = $this->find($query, $fields);
     $cursor = $cursor->limit(-1);
     $cursor->rewind(); // TODO: Need to remove later 
-    //var_dump($cursor->current());
+    ////var_dump($cursor->current());
     return $cursor->current();
   }
 
@@ -417,18 +420,22 @@ class MongoCollection {
   public function group(mixed $keys,
                         array $initial,
                         string $reduce,
-                        array $options = array()): array {
+                        array $options = array('condition'=>array())): array {
     $group = array( '$reduce' => $reduce,
                     'initial' => $initial);
-//    if(get_class($keys) == "MongoCode") {
-//      $group['$keyf'] = $keys;
-//    }
-//    else {
-//      $group['key'] = $keys;
-//    }
-    $group['$keyf'] = $keys;
+    if(get_class($keys) == "MongoCode") {
+      $group['$keyf'] = $keys;
+    }
+    else {
+      $group['key'] = $keys;
+    }
+    
+    $group["ns"] = $this->name;
+    $group["cond"] = $options['condition'];
     $cmd = array('group' => $group);
+    //var_dump($cmd);
     $ret = $this->db->command($cmd);
+    //var_dump($ret);
     if (!$ret["ok"]) {
       throw new MongoResultException("Group command failed");
     }

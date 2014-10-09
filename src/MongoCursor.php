@@ -472,7 +472,7 @@ class MongoCursor implements \Iterator {
    *   called on.
    */
   public function sort(array $fields) {
-    $this->addOption('$orderby', $fields);
+    $this->query['$orderby']= $fields;
     return $this;
   }
 
