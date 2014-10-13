@@ -330,11 +330,10 @@ class MongoCollection {
    * @return array - Returns record matching the search or NULL.
    */
   public function findOne(array $query = array(),
-                          array $fields = array()): array {
+                          array $fields = array()): mixed {
     $cursor = $this->find($query, $fields);
     $cursor = $cursor->limit(-1);
     $cursor->rewind(); // TODO: Need to remove later 
-    ////var_dump($cursor->current());
     return $cursor->current();
   }
 
